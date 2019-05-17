@@ -14,11 +14,11 @@ export default class componentName extends Component {
           <Stack key='root' hideNavBar={true}>
             <Scene key="signin"
                    component={SignIn}
-                  
+                   initial
             />
              <Scene key="signup"
                    component={SignUp}
-                   initial
+                   
             />
              <Scene key="forgotpassword"
                    component={ForgotPassword}

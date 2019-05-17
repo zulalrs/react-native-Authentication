@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 import {View,Image,Dimensions, TextInput,Text,TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
+import {signIn} from '../actions';
+import { Actions } from 'react-native-router-flux';
 
 const {width,height}=Dimensions.get('window');
 const w=width*0.56;
 const h=height*0.086;
 class SignIn extends Component {
+  state={
+    email:'',
+    password:''
+  }
+  login(){
+    const {email,password}=this.state;
+    this.props.signIn({email,password});
+  }
   render() {
+    const {email,password}=this.state
     return (
       <View style={{flex:1}}>
         <View style={styles.view1Styes}>
@@ -19,23 +31,28 @@ class SignIn extends Component {
             style={styles.inputEmailStyle}
             placeholder='Email'
             placeholderTextColor='#979899'
+            onChangeText={(text)=>this.setState({email:text})}
+            value={email}
             />
             <TextInput
-            style={styles.inputEmailStyle}
+            style={styles.inputPswStyle}
+            secureTextEntry
             placeholder='Password'
             placeholderTextColor='#979899'
+            onChangeText={(text)=>this.setState({password:text})}
+            value={password}
             />
             <Text style={styles.textStyle}>Forgot password?</Text>
           </View>
           
-          <TouchableOpacity style={styles.buttonStyle}>
-            <Text style={{color:'#fff',fontFamily:'SFUIDisplay-Bold'}}>SIGN IN</Text>
+          <TouchableOpacity style={styles.buttonStyle} onPress={this.login.bind(this)}>
+            <Text style={{color:'#fff',fontFamily:'SFUIDisplay-Bold'}} >SIGN IN</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.view3Style}>
           <Text style={{color:'#505050'}}>Don't have an account?</Text>
-          <Text style={{color:'#FF7260',marginBottom:12}}>Create new account</Text>
+          <Text onPress={()=>Actions.replace('signup')} style={{color:'#FF7260',marginBottom:20}}>Create new account</Text>
         </View>
       </View>
     );
@@ -106,4 +123,8 @@ const styles={
   }
 }
 
-export default SignIn;
+const mapStateToProps=({authResponse})=>{
+  const {email,password}=authResponse;
+  return {email,password};
+}
+export default connect(mapStateToProps,{signIn})(SignIn);
