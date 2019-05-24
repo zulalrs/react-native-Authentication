@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import {Router,Scene,Stack} from 'react-native-router-flux';
+import {AsyncStorage} from 'react-native';
+import {Router,Scene,Stack,Actions} from 'react-native-router-flux';
 
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import ForgotPassword from './components/ForgotPassword';
+import Main from './components/Main';
 
 export default class componentName extends Component {
+  
   render() {
     return (
       <Router
@@ -22,6 +25,9 @@ export default class componentName extends Component {
             />
              <Scene key="forgotpassword"
                    component={ForgotPassword}
+            />
+             <Scene key="main"
+                   component={Main}
             />
           </Stack>
       </Router>

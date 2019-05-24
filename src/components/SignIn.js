@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {View,Image,Dimensions, TextInput,Text,TouchableOpacity} from 'react-native';
+import {View,Image,Dimensions, TextInput,Text,TouchableOpacity,AsyncStorage} from 'react-native';
 import {connect} from 'react-redux';
-import {signIn} from '../actions';
+import {signIn,sendId} from '../actions';
 import { Actions } from 'react-native-router-flux';
 
 const {width,height}=Dimensions.get('window');
@@ -15,6 +15,13 @@ class SignIn extends Component {
   login(){
     const {email,password}=this.state;
     this.props.signIn({email,password});
+  }
+  componentWillMount(){
+    // AsyncStorage.getItem('data').then(value=>{
+    //   const uid=JSON.parse(value);
+    //   console.warn(uid);
+    //   this.props.sendId({uid});
+    // });
   }
   render() {
     const {email,password}=this.state
@@ -42,7 +49,7 @@ class SignIn extends Component {
             onChangeText={(text)=>this.setState({password:text})}
             value={password}
             />
-            <Text style={styles.textStyle}>Forgot password?</Text>
+            <Text onPress={()=>Actions.replace('forgotpassword')} style={styles.textStyle}>Forgot password?</Text>
           </View>
           
           <TouchableOpacity style={styles.buttonStyle} onPress={this.login.bind(this)}>
@@ -124,7 +131,7 @@ const styles={
 }
 
 const mapStateToProps=({authResponse})=>{
-  const {email,password}=authResponse;
-  return {email,password};
+  const {email,password,uid}=authResponse;
+  return {email,password,uid};
 }
-export default connect(mapStateToProps,{signIn})(SignIn);
+export default connect(mapStateToProps,{signIn,sendId})(SignIn);
